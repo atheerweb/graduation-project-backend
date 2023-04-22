@@ -17,3 +17,13 @@ class User (models.Model):
     city = models.CharField(max_length=45)
     Street = models.CharField(max_length=45)
     email_address = models.EmailField(max_length=40)
+
+class Role (models.Model):
+    Role_id = models.AutoField(primary_key=True)
+    Role_name = models.CharField(max_length=45)
+
+
+class Permission (models.Model):
+    Permission_ID = models.AutoField(primary_key=True)
+    Permission_Name = models.CharField(max_length=45)
+    # Role_Role_ID = models.ForeignKey(Role, on_delete=models.CASCADE)
