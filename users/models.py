@@ -1,5 +1,5 @@
 from django.db import models
-
+from courses.models import Course
 # Create your models here.
 
 
@@ -17,13 +17,23 @@ class User (models.Model):
     city = models.CharField(max_length=45)
     Street = models.CharField(max_length=45)
     email_address = models.EmailField(max_length=40)
+    def __str__(self):
+        return str(self.user_id)
+
 
 class Role (models.Model):
-    Role_id = models.AutoField(primary_key=True)
-    Role_name = models.CharField(max_length=45)
+    role_id = models.AutoField(primary_key=True)
+    role_name = models.CharField(max_length=45)
+    role_has_user = models.ManyToManyField(User, null=True)
+
+    def __str__(self):
+        return str(self.role_id)
 
 
 class Permission (models.Model):
-    Permission_ID = models.AutoField(primary_key=True)
-    Permission_Name = models.CharField(max_length=45)
-    # Role_Role_ID = models.ForeignKey(Role, on_delete=models.CASCADE)
+    permission_id = models.AutoField(primary_key=True)
+    permission_name = models.CharField(max_length=45)
+    permission_has_role = models.ManyToManyField(Role, null=True)
+
+    def __str__(self):
+        return str(self.permission_id)
