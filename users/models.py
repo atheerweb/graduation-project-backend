@@ -17,6 +17,7 @@ class User (models.Model):
     city = models.CharField(max_length=45)
     Street = models.CharField(max_length=45)
     email_address = models.EmailField(max_length=40)
+
     def __str__(self):
         return str(self.user_id)
 
@@ -37,3 +38,12 @@ class Permission (models.Model):
 
     def __str__(self):
         return str(self.permission_id)
+
+
+class UserRoles(models.Model):
+    user_rel = models.ForeignKey(User, on_delete=models.CASCADE)
+    role_rel = models.ForeignKey(Role, on_delete=models.CASCADE)
+
+class RolePermetion(models.Model):
+    permeion_rel = models.ForeignKey(Permission, on_delete=models.CASCADE)
+    role_rel = models.ForeignKey(Role, on_delete=models.CASCADE)
