@@ -20,6 +20,6 @@ class Category(models.Model):
     def __str__(self):
         return str(self.category_name)
     
-class CourseRegister(model.Model):
+class CourseRegister(models.Model):
     user_rel = models.ForeignKey(User, on_delete=models.CASCADE)
     Course_rel = models.ForeignKey(Course, on_delete=models.CASCADE)
