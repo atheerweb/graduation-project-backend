@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'freelance.apps.FreelanceConfig',
     'support.apps.SupportConfig',
     'courses.apps.CoursesConfig',
     'users.apps.UsersConfig',

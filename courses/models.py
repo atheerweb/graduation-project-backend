@@ -9,7 +9,7 @@ class Course(models.Model):
     course_name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.DecimalField(max_digits=10, decimal_places=2)
-    user_re = models.ManyToManyField(User,null=True)
+    user_to_course= models.ManyToManyField('users.User',through='CourseRegister')
     def __str__(self):
         return str(self.course_id)
 
