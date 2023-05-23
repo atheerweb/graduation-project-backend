@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
 # Create your models here.
-
+from accounts.models import MyUser
 
 class User (models.Model):
     GENDER_CHOICES = (
@@ -18,11 +18,7 @@ class User (models.Model):
     Street = models.CharField(max_length=255)
     email_address = models.EmailField(max_length=255)
     password = models.CharField(max_length=255, null=True)
-    user_to_role = models.ManyToManyField('Role', through='UserRoles')
-    user_to_course = models.ManyToManyField(
-        'courses.Course', through='courses.CourseRegister')
-    user_to_jop= models.ManyToManyField('freelance.Job',through='freelance.UserApplyJobs')
-
+    
     def __str__(self):
         return str(self.user_id)
 
@@ -30,7 +26,7 @@ class User (models.Model):
 class Role (models.Model):
     role_id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=255)
-    role_to_user = models.ManyToManyField('User', through='UserRoles')
+    role_to_user = models.ManyToManyField('accounts.MyUser', through='UserRoles')
     role_to_per = models.ManyToManyField('Permission', through='RolePermetion')
 
     def __str__(self):
@@ -47,7 +43,7 @@ class Permission (models.Model):
 
 
 class UserRoles(models.Model):
-    user_rel = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     role_rel = models.ForeignKey(Role, on_delete=models.CASCADE)
 
 
