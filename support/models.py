@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
-from users.models import User
+from accounts.models import MyUser
+
 # Create your models here.
 
 
@@ -11,7 +12,7 @@ class SupportTicket (models.Model):
     # 1,000 characters is between 142 words and 250 words
     description = models.CharField(max_length=1000)
     date_time = models.DateTimeField(default=datetime.now)
-    user_re = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
+    user_re = models.OneToOneField(MyUser, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return str(self.Ticket_id)

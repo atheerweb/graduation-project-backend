@@ -22,7 +22,6 @@ class MyUser(AbstractUser):
     country = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     Address = models.CharField(max_length=255, blank=True, null=True)
-
     user_to_role = models.ManyToManyField(
         'users.Role', through='users.UserRoles')
     user_to_course = models.ManyToManyField(

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models import User, UserRoles, Role
+from users.models import  UserRoles, Role
 from courses.models import Category, Course
 from freelance.models import Job
 from rest_framework import serializers

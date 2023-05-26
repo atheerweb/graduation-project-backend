@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import datetime
-from users.models import User
 from accounts.models import MyUser
 # Create your models here.
 class FreelancerTransaction(models.Model):
@@ -14,10 +13,10 @@ class Job(models.Model):
     descriotion = models.CharField(max_length=1000)
     jop_to_user= models.ManyToManyField('accounts.MyUser',through='UserApplyJobs')
 
+
 class UserApplyJobs(models.Model):
     jop_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     user_freelancer_rel = models.ForeignKey(Job, on_delete=models.CASCADE)
-
 
 class projects(models.Model):
     project_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)

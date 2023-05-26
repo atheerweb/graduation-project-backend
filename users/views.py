@@ -7,40 +7,12 @@ from django.views.decorators.http import require_http_methods
 
 from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers
 from django.http import JsonResponse
-from .models import User, Permission, Role, UserRoles
+from .models import  Permission, Role, UserRoles
 
 
 # Create your views here.
 
 
-@api_view(['GET', 'POST'])
-def user_list(request, format=None):
-
-    # get all the data
-    # serialize them
-    # return json
-
-    # check up -----> request GET
-    if request.method == 'GET':
-        query_user = User.objects.all()
-        serializer = Userserializer(query_user, many=True)
-        return Response(serializer.data)
-
-    if request.method == 'POST':
-        serializer = Userserializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-
-            id = serializer.data['user_id']
-            query_role = Role.objects.filter(role_name=request.data['role'])
-            serializer3 = Roleserializer(query_role, many=True)
-            print("role_id:", serializer3.data[0]['role_id'])
-            data_dic = {'user_rel': id,
-                        'role_rel': serializer3.data[0]['role_id']}
-            serializer2 = UserRolesSerializers(data=data_dic)
-            if serializer2.is_valid():
-                serializer2.save()
-            return Response({'user_info': [serializer.data], 'relation_info': [serializer2.data]}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])
