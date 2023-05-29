@@ -17,6 +17,7 @@ class Job(models.Model):
 class UserApplyJobs(models.Model):
     jop_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     user_freelancer_rel = models.ForeignKey(Job, on_delete=models.CASCADE)
+    owner = models.BooleanField(default=False)
 
 class projects(models.Model):
     project_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
@@ -26,3 +27,15 @@ class projects(models.Model):
     audio_urls = models.CharField(max_length=1000)
     videos_urls = models.CharField(max_length=1000)
     attachements_urls = models.CharField(max_length=1000)
+
+
+
+class Major(models.Model):
+    major_id = models.AutoField(primary_key=True)
+    major_name = models.CharField(max_length=255)
+
+
+class FreelancerData(models.Model):
+    freelancer_rel = models.ForeignKey(MyUser,on_delete=models.CASCADE)
+    review = models.FloatField(max_length=5)
+    major_id = models.OneToOneField(Major, on_delete=models.CASCADE,null=True)

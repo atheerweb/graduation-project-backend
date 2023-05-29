@@ -21,5 +21,6 @@ class Category(models.Model):
     
 class CourseRegister(models.Model):
     user_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-    rating = models.IntegerField(unique= True)
     Course_rel = models.ForeignKey(Course, on_delete=models.CASCADE)
+    rating = models.IntegerField(unique=True)
+    owner = models.BooleanField(default=False)
