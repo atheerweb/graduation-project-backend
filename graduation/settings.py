@@ -93,7 +93,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600 , ssl_require=True) 
+DATABASES['default'] = dj_database_url.config() 
 
 
 # Password validation
@@ -131,7 +131,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
 STATIC_ROOT = BASE_DIR / "staticfiles_build" / "static" 
 
 # Default primary key field type
