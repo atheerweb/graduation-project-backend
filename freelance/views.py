@@ -57,6 +57,7 @@ def get_freelancers(request):
       freelancer_users = MyUser.objects.filter(user_to_role=freelancer_roles)
       
       serializer = AllFreelancers(freelancer_users, many=True)
+      
       return Response(serializer.data)
 
 

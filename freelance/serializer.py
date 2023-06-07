@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import projects
 from accounts.models import MyUser
 from users.models import UserRoles
-from freelance.models import Job
+from freelance.models import Job , FreelancerData , Major
 
 class Top5(serializers.ModelSerializer):
     class Meta: 
@@ -17,7 +17,17 @@ class ProjectsSerializer(serializers.ModelSerializer):
 class AllFreelancers(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email' , 'username']
+
+class AllFreelancerplus(serializers.ModelSerializer):
+    class Meta:
+        model = FreelancerData 
+        fields = [ 'freelancer_rel', 'review' , 'major_id']
+
+class MajorSerial(serializers.ModelSerializer):
+    class Meta:
+        model = Major 
+        fields = [ 'major_id', 'major_name' ]
 
 class RandomSerial(serializers.ModelSerializer):
     class Meta:
