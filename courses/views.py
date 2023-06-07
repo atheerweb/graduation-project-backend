@@ -2,20 +2,41 @@ from .models import Category, Course
 from graduation.serializers import Get_Category, Get_Top5_Courses
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from courses.serializer import CoursesSerial , CourseSerial,RandomSerial
 from random import sample
 # Create your views here.
 
-@api_view(['GET'])
+@api_view()
+@permission_classes([AllowAny])
 def get_courses(request,  format = None):
-         if request.method == "GET":
-         #get all the drinks
-            courses_name_query =Course.objects.all()
+         
+         
+        # if request.method == "GET":
+        #  get all the drinks
+        #     courses_name_query =Course.objects.all()
+        #  serializer them
+        #     serializer =CoursesSerial(courses_name_query, many=True)
+        #  return them
+            
+         
+        queryset =Course.objects.all()
+        course_name_v = request.query_params.get('course_name',None) 
+
+        if course_name_v:
+         
+            queryset =queryset.filter(course_name__contains = course_name_v)
+
+            if len(queryset)==0:
+                  return Response(status=status.HTTP_404_NOT_FOUND)
+                  
+
          # serializer them
-            serializer =CoursesSerial(courses_name_query, many=True)
+
+        serializer =CoursesSerial(queryset, many=True)
          # return them
-            return Response(serializer.data)
+        return Response(serializer.data)
          
 @api_view(['GET'])
 def get_course(request , id , format = None):
