@@ -163,6 +163,14 @@ def get_jobs(request,  format = None):
          if request.method == "GET":
             jobs_name_query =Job.objects.all()
             serializer =JobsSerializer(jobs_name_query, many=True)
+
+            return Response(serializer.data)
+
+@api_view(['GET'])
+def get_job(request, id , format = None):
+         if request.method == "GET":
+            jobs_name_query =Job.objects.get(job_id=id)
+            serializer =JobsSerializer(jobs_name_query, many=True)
             return Response(serializer.data)
 
 
