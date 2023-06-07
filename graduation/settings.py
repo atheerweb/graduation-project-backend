@@ -88,10 +88,8 @@ WSGI_APPLICATION = 'graduation.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'graduation',
-        'USER':'yousouf',
-        'PASSWORD':'password'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
