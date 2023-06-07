@@ -28,5 +28,8 @@ class JobsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = ['job_id','jop_title','descriotion']
-
+class JobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = ['job_id','jop_title','descriotion']
 
