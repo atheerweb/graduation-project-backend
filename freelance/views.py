@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from freelance.models import projects
-from .serializer import ProjectsSerializer,JobsSerializer
+from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer
 from django.views.decorators.http import require_http_methods
 from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers
 from django.http import JsonResponse
@@ -163,14 +163,13 @@ def get_jobs(request,  format = None):
          if request.method == "GET":
             jobs_name_query =Job.objects.all()
             serializer =JobsSerializer(jobs_name_query, many=True)
-
             return Response(serializer.data)
 
 @api_view(['GET'])
 def get_job(request, id , format = None):
          if request.method == "GET":
             jobs_name_query =Job.objects.get(job_id=id)
-            serializer =JobsSerializer(jobs_name_query, many=True)
+            serializer =JobSerializer(jobs_name_query)
             return Response(serializer.data)
 
 
