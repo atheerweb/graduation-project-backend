@@ -11,22 +11,27 @@ from random import sample
 
 @api_view()
 @permission_classes([AllowAny])
-def get_courses(request,  format = None):
-        # if request.method == "GET":
-        #  get all the drinks
-        #     courses_name_query =Course.objects.all()
-        #  serializer them
-        #     serializer =CoursesSerial(courses_name_query, many=True)
-        #  return them
+def get_courses(request, format=None):
+    queryset = Course.objects.all()
+    course_name_v = request.query_params.get('course_name', None)
+    if course_name_v:
+        queryset = queryset.filter(course_name__contains=course_name_v)
+        if len(queryset) == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        queryset =Course.objects.all()
-        course_name_v = request.query_params.get('course_name',None) 
-        if course_name_v:
-            queryset =queryset.filter(course_name__contains = course_name_v)
-            if len(queryset)==0:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer =CoursesSerial(queryset, many=True)
-        return Response(serializer.data)
+    serializer = CoursesSerial(queryset, many=True)
+    data = serializer.data
+
+    # Retrieve and append user first and last name
+    for course_data in data:
+        course_name = course_data['course_name']
+        users = MyUser.objects.filter(user_to_course__course_name=course_name)
+        full_names = [f"{user.first_name} {user.last_name}" for user in users]
+        course_data['user_full_name'] = full_names
+
+    return Response(data)
+
+
 
 @api_view(['GET'])
 def get_course(request , id , format = None):

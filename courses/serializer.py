@@ -19,7 +19,7 @@ class CourseSerial(serializers.ModelSerializer):
 class CoursesSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ( 'course_name', 'price','duration' )
+        fields = ( 'course_name', 'price','duration'  )
 
 class Category(serializers.ModelSerializer):
     class Meta:
