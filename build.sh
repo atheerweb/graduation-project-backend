@@ -14,5 +14,3 @@ echo "Collect Static......"
 python3.9 manage.py collectstatic --noinput --clear
 
 
-echo "Creating superuser......"
-python manage.py shell --noinput
