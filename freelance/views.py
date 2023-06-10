@@ -1,10 +1,10 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view , authentication_classes , permission_classes
 from freelance.models import projects
-from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer
+from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer 
 from django.views.decorators.http import require_http_methods
-from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers
+from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers 
 from django.http import JsonResponse
 from accounts.models import MyUser
 from users.models import Permission, Role, UserRoles
@@ -15,6 +15,8 @@ from graduation.serializers import UserRolesSerializers
 from django.http import JsonResponse
 from django.http import HttpRequest
 from random import sample
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -172,6 +174,17 @@ def get_job(request, id , format = None):
             serializer =JobSerializer(jobs_name_query)
             return Response(serializer.data)
 
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def post(request):
+         if request.method == 'POST':
+            serializer = JobSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
