@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -63,10 +64,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 CORS_ALLOWED_ORIGINS = [
-    'https://graduation-project-backend-lqkbm5mfz-atheerweb.vercel.app',
-    'http://127.0.0.1:8000/'
+    'http://*', 'https://*'
     # Add any other origins that should be allowed to make requests
 ]
 
