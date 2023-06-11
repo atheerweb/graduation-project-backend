@@ -12,6 +12,7 @@ urlpatterns = [
     path('category/', views.get_category),
     # viewsets courses url
     path('Viewsets/',include(router.urls)),
+
     # find by postman
-    path('Viewsets/Coures/find/', views.find_course),
+    #path('Viewsets/Coures/find/', views.find_course),
 ]

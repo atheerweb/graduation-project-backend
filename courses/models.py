@@ -17,6 +17,9 @@ class Category(models.Model):
 class Course(models.Model):
     course_id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=255)
+    description = models.CharField(max_length=1000 , null=True)
+    image_url = models.CharField(max_length=1000, null=True)
+    course_url = models.CharField(max_length=1000, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.DecimalField(max_digits=10, decimal_places=2)
     user_to_course= models.ManyToManyField('accounts.MyUser',through='CourseRegister')
