@@ -44,4 +44,9 @@ class CourseSerializerRAN(serializers.ModelSerializer):
 
     class Meta:
         model = Course
+<<<<<<< HEAD
         fields = ['course_id', 'course_name', 'price', 'duration', 'user_full_name', 'description' ,'image_url' ]
+=======
+        fields = ['course_id', 'course_name', 'price', 'duration', 'user_full_name' ]
+      
+>>>>>>> 06001f5ff6b10647b90ddc84d9aa6658be490657

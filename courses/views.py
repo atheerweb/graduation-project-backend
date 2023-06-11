@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from courses.serializer import CoursesSerial , CourseSerial,RandomSerial , CourseSerializerRAN
 from random import sample
+from django_filters import rest_framework as filters
 # Create your views here.
 
 
@@ -111,8 +112,9 @@ from rest_framework import viewsets
 class viewsets_courses(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerial
-    # filter_backend =[filter.SearchFilter]
-    # search_fields = ['course_name','price']
+    filter_backends =[filters.DjangoFilterBackend,]
+    filterset_fields = ['course_name','price']
+
 
 # Find Course
 @api_view(['GET'])
@@ -122,3 +124,6 @@ def find_course(request):
 
     serializer = CoursesSerial(courses,many=True)
     return Response(serializer.data)
+
+
+
