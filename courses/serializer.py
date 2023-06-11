@@ -15,11 +15,11 @@ class userser(serializers.ModelSerializer):
 class CourseSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ['course_name', 'price','duration']
+        fields = ['course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
 class CoursesSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ( 'course_name', 'price','duration' )
+        fields = ( 'course_name', 'price','duration', 'description', 'image_url')
 
 class Category(serializers.ModelSerializer):
     class Meta:
@@ -44,4 +44,4 @@ class CourseSerializerRAN(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['course_id', 'course_name', 'price', 'duration', 'user_full_name' ]
+        fields = ['course_id', 'course_name', 'price', 'duration', 'user_full_name', 'description' ,'image_url' ]

@@ -59,6 +59,7 @@ def get_course(request , id , format = None):
             return Response(sel)
 
 
+
 # @api_view(['GET'])
 # def get_top5_courses(request,  format = None):
 #     courses = Course.objects.values('course_id','course_name', 'price','duration')
@@ -77,6 +78,11 @@ def get_course(request , id , format = None):
 
 #     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_suggested_courses(request, format=None):
+    courses = Course.objects.order_by('?')[:3]
+    serializer = CourseSerializerRAN(courses, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def get_category(request,  format = None):

@@ -8,6 +8,7 @@ router.register('Coures', views.viewsets_courses)
 urlpatterns = [
     path('courses/', views.get_courses),
     path('top/', views.get_top5_courses),
+    path('3-sug/', views.get_suggested_courses),
     path('course/<int:id>/', views.get_course),
     path('category/', views.get_category),
     # viewsets courses url
