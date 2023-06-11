@@ -66,6 +66,7 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'https://graduation-project-backend-lqkbm5mfz-atheerweb.vercel.app',
+    'http://127.0.0.1:8000/'
     # Add any other origins that should be allowed to make requests
 ]
 
