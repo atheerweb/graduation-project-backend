@@ -1,3 +1,5 @@
+import courses
+from courses import serializer
 from .models import Category, Course , CourseRegister
 from accounts.models import MyUser
 from graduation.serializers import Get_Category, Get_Top5_Courses 
@@ -8,6 +10,7 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from courses.serializer import CoursesSerial , CourseSerial,RandomSerial , CourseSerializerRAN
 from random import sample
 # Create your views here.
+
 
 @api_view()
 @permission_classes([AllowAny])
@@ -94,4 +97,22 @@ def get_top5_courses(request, format=None):
     courses = Course.objects.all()
     random_courses = sample(list(courses), 5)
     serializer = CourseSerializerRAN(random_courses, many=True)
+    return Response(serializer.data)
+
+# Viewsets for Courses 
+
+from rest_framework import viewsets
+class viewsets_courses(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerial
+    # filter_backend =[filter.SearchFilter]
+    # search_fields = ['course_name','price']
+
+# Find Course
+@api_view(['GET'])
+def find_course(request):
+    courses = Course.objects.filter(course_name = request.data['course_name'])
+                                    # price = request.data['price']
+
+    serializer = CoursesSerial(courses,many=True)
     return Response(serializer.data)
