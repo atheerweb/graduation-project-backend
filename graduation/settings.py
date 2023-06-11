@@ -61,6 +61,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+CORS_ALLOWED_ORIGINS = [
+    'https://graduation-project-backend-lqkbm5mfz-atheerweb.vercel.app',
+    # Add any other origins that should be allowed to make requests
 ]
 
 ROOT_URLCONF = "graduation.urls"
