@@ -37,3 +37,11 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+
+# from django.contrib.auth import logout
+
+# class LogoutAPI(generics.GenericAPIView):
+
+#     def post(self, request, *args, **kwargs):
+#         logout(request)
+#         return Response({"message": "You have been logged out."})

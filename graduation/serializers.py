@@ -11,6 +11,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 # User Serializer
 
+from django.contrib.auth.hashers import make_password
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,7 +35,7 @@ class RegisterSerializer(serializers.ModelSerializer):
                                      first_name=validated_data['first_name'],
                                      last_name=validated_data['last_name'],
                                      email=validated_data['email'],
-                                     password=validated_data['password'],
+                                     password=make_password(validated_data['password']),
                                      gender=validated_data['gender'],
                                      birth_date=validated_data['birth_date'],
                                      country=validated_data['country'],

@@ -10,6 +10,8 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from courses.serializer import CoursesSerial , CourseSerial,RandomSerial , CourseSerializerRAN
 from random import sample
 from django_filters import rest_framework as filters
+from courses.permission import IsOwnerOrReadOnly
+
 # Create your views here.
 
 
@@ -114,6 +116,7 @@ class viewsets_courses(viewsets.ModelViewSet):
     serializer_class = CourseSerial
     filter_backends =[filters.DjangoFilterBackend,]
     filterset_fields = ['course_name','price']
+    permission_classes = [IsOwnerOrReadOnly]
 
 
 # Find Course
