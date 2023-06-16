@@ -17,6 +17,7 @@ from django.http import HttpRequest
 from random import sample
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 from rest_framework.permissions import IsAuthenticated
+from django_filters import rest_framework as filters
 
 
 # Create your views here.
@@ -188,3 +189,18 @@ def post(request):
 
 
 
+from rest_framework import viewsets
+class viewsets_job(viewsets.ModelViewSet):
+    queryset = Job.objects.all()
+    serializer_class = JobsSerializer
+    filter_backends =[filters.DjangoFilterBackend,]
+   #  filterset_fields = ['jop_title','major_rel']
+    filterset_fields = ['jop_title__icontains', 'major_rel__icontains']
+
+
+
+class viewsets_project(viewsets.ModelViewSet):
+    queryset = projects.objects.all()
+    serializer_class = ProjectsSerializer
+    filter_backends =[filters.DjangoFilterBackend,]
+    filterset_fields = ['project_name','project_descriotion']
