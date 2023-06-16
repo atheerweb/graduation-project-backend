@@ -15,4 +15,4 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
 
         # Instance must have an attribute named owner.
-        return request.user in obj.user_to_course.all()
+        return request.user in obj.course_to_user.all()

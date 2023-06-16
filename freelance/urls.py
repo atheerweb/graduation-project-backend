@@ -24,4 +24,5 @@ urlpatterns = [
     path('filter_job/', views.job_filter),
 
 
+
 ]

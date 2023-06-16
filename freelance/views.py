@@ -1,3 +1,4 @@
+from re import I
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view , authentication_classes , permission_classes
@@ -21,6 +22,7 @@ from django_filters import rest_framework as filters
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework import viewsets
 from graduation.permissons import IsOwnerOrReadOnly
+from .permission import IsOwnerOrReadOnlyForJob
 
 # Create your views here.
 
@@ -192,13 +194,12 @@ def post(request):
 
 # viewsets for jobs include post, get, put, delete and exact filter
 class viewsets_job(viewsets.ModelViewSet):
-
     queryset = Job.objects.all()
     serializer_class = JobsSerializer
     filter_backends =[filters.DjangoFilterBackend,]
     filterset_fields = ['jop_title','major_rel']
    #  authentication_classes = [TokenAuthentication,]
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnlyForJob]
    
 
 
@@ -223,5 +224,7 @@ def job_filter(request, format=None):
 
     serializer = JobsSerializer(queryset, many=True)
     data = serializer.data
+    return Response(data)
+
 
 

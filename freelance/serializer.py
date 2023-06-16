@@ -11,13 +11,13 @@ class Top5(serializers.ModelSerializer):
 class ProjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = projects
-        fields = ('project_name', 'project_descriotion', 'image_urls', 'videos_urls', 'attachements_urls')
+        fields = ('project_rel','project_name', 'project_descriotion', 'image_urls', 'audio_urls','videos_urls', 'attachements_urls')
 
 
 class AllFreelancers(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'about']
 
 class RandomSerial(serializers.ModelSerializer):
     class Meta:
@@ -27,7 +27,7 @@ class RandomSerial(serializers.ModelSerializer):
 class JobsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
-        fields = ['job_id','jop_title','descriotion']
+        fields = ['job_id','jop_title','descriotion','major_rel']
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job

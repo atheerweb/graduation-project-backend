@@ -8,23 +8,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     Assumes the model instance has an owner attribute.
     """
 
-    def has_object_permission(self, request, view, obj):
+    def has_object(self, request, view, obj):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
         if request.method in permissions.SAFE_METHODS:
             return True
 
         # Instance must have an attribute named owner.
-        return request.user in obj.jop_to_user.all()
+        return request.user in obj.project_rel.all() 
 
-
-    def has_object_permissionCourses(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        # Instance must have an attribute named owner.
-        return request.user in obj.user_to_course.all()
 
 
