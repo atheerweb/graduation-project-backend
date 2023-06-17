@@ -24,19 +24,35 @@ class RandomSerial(serializers.ModelSerializer):
         model = MyUser
         fields = ['username','first_name', 'last_name', 'Address', 'country' , 'city', 'email','about']
 
-class JobsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Job
-        fields = ['job_id','jop_title','descriotion','major_rel']
-        
-class JobSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Job
-        fields = ['job_id','jop_title','descriotion']
+
 
 class FreelancerDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = FreelancerData
         fields = ['review','image_url','freelancer_rel','major_rel']
 
+
+class JobsSerializer(serializers.ModelSerializer):
+    user_full_name = serializers.SerializerMethodField()
+
+    def get_user_full_name(self, obj):
+        users = obj.jop_to_user.all()  # Retrieve all related users
+        full_names = [f"{user.first_name} {user.last_name}" for user in users]
+        return full_names
+
+    class Meta:
+        model = Job
+        fields = ['job_id','jop_title','descriotion', 'user_full_name',  'image_url','min_price','max_price','entry_date' ]
+
+class JobSerializer(serializers.ModelSerializer):
+    user_full_name = serializers.SerializerMethodField()
+
+    def get_user_full_name(self, obj):
+        users = obj.jop_to_user.all()  # Retrieve all related users
+        full_names = [f"{user.first_name} {user.last_name}" for user in users]
+        return full_names
+
+    class Meta:
+        model = Job
+        fields = ['job_id','jop_title','descriotion', 'user_full_name',  'image_url','min_price','max_price','entry_date' ]
 
