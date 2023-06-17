@@ -6,7 +6,8 @@ router  = DefaultRouter()
 router.register('courses', views.viewsets_courses)
 
 urlpatterns = [
-    path('courses/', views.get_courses),
+    path('courses_fliter/', views.get_courses),
+    path('category_fliter/', views.category_filter),
     path('top/', views.get_top5_courses),
     path('3-sug/', views.get_suggested_courses),
     path('course/<int:id>/', views.get_course),

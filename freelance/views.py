@@ -3,13 +3,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view , authentication_classes , permission_classes
 from freelance.models import projects
-from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer 
+from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer , FreelancerDataSerializer
 from django.views.decorators.http import require_http_methods
 from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers 
 from django.http import JsonResponse
 from accounts.models import MyUser
 from users.models import Permission, Role, UserRoles
-from freelance.models import Job,UserApplyJobs
+from freelance.models import Job,UserApplyJobs, Major, FreelancerData
 from django.contrib.auth.models import User
 from .serializer import AllFreelancers, RandomSerial
 from graduation.serializers import UserRolesSerializers
@@ -211,20 +211,83 @@ class viewsets_project(viewsets.ModelViewSet):
    filterset_fields = ['project_name','project_descriotion']
    permission_classes = [IsOwnerOrReadOnly]
 
-# filter for projects jobs by major, name and created date
+# filter by major name
+@api_view()
+@permission_classes([AllowAny])
+def major_filter(request, format=None):
+    queryset = Job.objects.all()
+    major = request.query_params.get('major_rel__major_name', None)
+    if major: 
+        queryset = queryset.filter(major_rel__major_name__contains=major)
+        if len(queryset) == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    serializer = JobsSerializer(queryset, many=True)
+    data = serializer.data
+    return Response(data)
+  
+# Filter by Job title 
+
 @api_view()
 @permission_classes([AllowAny])
 def job_filter(request, format=None):
-   queryset = Job.objects.all()
-   job_name = request.query_params.get('jop_title', None)
-   if job_name:
-      queryset = queryset.filter(jop_title__contains=job_name)
-      if len(queryset) == 0:
-         return Response(status=status.HTTP_404_NOT_FOUND)
+    queryset = Job.objects.all()
+    job_name = request.query_params.get('jop_title', None)
+    if job_name:
+           queryset = queryset.filter(jop_title__contains=job_name)
+           if len(queryset) == 0:
+               return Response(status=status.HTTP_404_NOT_FOUND)
+         
+    serializer = JobsSerializer(queryset, many=True)
+    data = serializer.data
+    return Response(data)
+  
+#Filter by freelancer name
 
-   serializer = JobsSerializer(queryset, many=True)
-   data = serializer.data
-   return Response(data)
+@api_view()
+@permission_classes([AllowAny])
+def freelancer_filter(request, format=None):
+    queryset = FreelancerData.objects.all()
+    freelancer_name = request.query_params.get('freelancer_rel__first_name', None)
+    if freelancer_name:
+           queryset = queryset.filter(freelancer_rel__first_name__contains=freelancer_name)
+           if len(queryset) == 0:
+               return Response(status=status.HTTP_404_NOT_FOUND)
+         
+    serializer = FreelancerDataSerializer(queryset, many=True)
+    data = serializer.data
 
+   #  Retrieve and append user first and last name
 
+   #  for freelancer_data in data:
+   #      name = freelancer_data['freelancer_rel']
+   #      users = MyUser.objects.filter(freelancer_rel__first_name=name)
+   #      full_names = [f"{user.first_name} {user.last_name}" for user in users]
+   #      freelancer_data['user_full_name'] = full_names
 
+    return Response(data)
+
+   #  for freelancer_data in data:
+   #      freelancer_rel = freelancer_data['freelancer_rel']
+   #      users = MyUser.objects.filter(id=freelancer_rel.id, first_name=freelancer_rel.first_name)
+   #      full_names = [f"{user.first_name} {user.last_name}" for user in users]
+   #      freelancer_data['user_full_name'] = full_names
+
+   #  return Response(data)
+
+# filter by freelancer major 
+@api_view()
+@permission_classes([AllowAny])
+def freelancer_major_filter(request, format=None):
+    queryset = FreelancerData.objects.all()
+    freelancer_name = request.query_params.get('major_rel__major_name', None)
+    if freelancer_name:
+           queryset = queryset.filter(major_rel__major_name__contains=freelancer_name)
+           if len(queryset) == 0:
+               return Response(status=status.HTTP_404_NOT_FOUND)
+         
+    serializer = FreelancerDataSerializer(queryset, many=True)
+    data = serializer.data
+
+    return Response(data)
+  

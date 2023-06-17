@@ -1,6 +1,6 @@
 from django.urls import path , include
 from .views import top_5_freelancers, get_freelancer_with_projects , get_random_users,get_freelancers
-from .views import get_jobs,get_job,post,viewsets_job , viewsets_project , job_filter
+from .views import get_jobs,get_job,post,viewsets_job , viewsets_project , job_filter, freelancer_filter, freelancer_major_filter ,major_filter
 from freelance import views
 
 from rest_framework.routers import DefaultRouter
@@ -21,8 +21,10 @@ urlpatterns = [
     path('job/<str:id>',get_job, name='get_job'),
     path('post_job', post),
     path('viewsets/',include(router.urls)),
-    path('filter_job/', views.job_filter),
-
+    path('filter_major/', views.major_filter),
+    path('filter_job_name/', views.job_filter),
+    path('filter_freelancer_name/', views.freelancer_filter),
+    path('filter_freelancer_major/', views.freelancer_major_filter),
 
 
 ]
