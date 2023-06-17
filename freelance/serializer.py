@@ -17,7 +17,7 @@ class ProjectsSerializer(serializers.ModelSerializer):
 class AllFreelancers(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ['first_name', 'last_name', 'email', 'about', 'image_url']
+        fields = ['first_name', 'last_name', 'email', 'about']
 
 class RandomSerial(serializers.ModelSerializer):
     class Meta:

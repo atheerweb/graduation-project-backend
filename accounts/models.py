@@ -29,7 +29,6 @@ class MyUser(AbstractUser):
         'courses.Course', through='courses.CourseRegister')
     user_to_jop = models.ManyToManyField(
         'freelance.Job', through='freelance.UserApplyJobs')
-    image_url = models.CharField(max_length=1000 , blank=True, null=True)
 
     def __str__(self):
         return self.username
