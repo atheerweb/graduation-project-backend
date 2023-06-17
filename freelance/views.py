@@ -187,44 +187,44 @@ def post(request):
          if request.method == 'POST':
             serializer = JobSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+               serializer.save()
+               return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # viewsets for jobs include post, get, put, delete and exact filter
 class viewsets_job(viewsets.ModelViewSet):
-    queryset = Job.objects.all()
-    serializer_class = JobsSerializer
-    filter_backends =[filters.DjangoFilterBackend,]
-    filterset_fields = ['jop_title','major_rel']
-   #  authentication_classes = [TokenAuthentication,]
-    permission_classes = [IsOwnerOrReadOnlyForJob]
-   
+   queryset = Job.objects.all()
+   serializer_class = JobsSerializer
+   filter_backends =[filters.DjangoFilterBackend,]
+   filterset_fields = ['jop_title','major_rel']
+#  authentication_classes = [TokenAuthentication,]
+   permission_classes = [IsOwnerOrReadOnlyForJob]
+
 
 
 # viewsets for projects include post, get, put, delete and exact filter
 class viewsets_project(viewsets.ModelViewSet):
-    queryset = projects.objects.all()
-    serializer_class = ProjectsSerializer
-    filter_backends =[filters.DjangoFilterBackend,]
-    filterset_fields = ['project_name','project_descriotion']
-    permission_classes = [IsOwnerOrReadOnly]
+   queryset = projects.objects.all()
+   serializer_class = ProjectsSerializer
+   filter_backends =[filters.DjangoFilterBackend,]
+   filterset_fields = ['project_name','project_descriotion']
+   permission_classes = [IsOwnerOrReadOnly]
 
 # filter for projects jobs by major, name and created date
 @api_view()
 @permission_classes([AllowAny])
 def job_filter(request, format=None):
-    queryset = Job.objects.all()
-    job_name = request.query_params.get('jop_title', None)
-    if job_name:
-        queryset = queryset.filter(jop_title__contains=job_name)
-        if len(queryset) == 0:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+   queryset = Job.objects.all()
+   job_name = request.query_params.get('jop_title', None)
+   if job_name:
+      queryset = queryset.filter(jop_title__contains=job_name)
+      if len(queryset) == 0:
+         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = JobsSerializer(queryset, many=True)
-    data = serializer.data
-    return Response(data)
+   serializer = JobsSerializer(queryset, many=True)
+   data = serializer.data
+   return Response(data)
 
 
 
