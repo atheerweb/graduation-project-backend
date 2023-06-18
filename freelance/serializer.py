@@ -17,12 +17,12 @@ class ProjectsSerializer(serializers.ModelSerializer):
 class AllFreelancers(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ['username','first_name', 'last_name', 'email', 'about',]
+        fields = ['username','first_name', 'last_name', 'email', 'about','image_url']
 
 class RandomSerial(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ['username','first_name', 'last_name', 'Address', 'country' , 'city', 'email','about']
+        fields = ['username','first_name', 'last_name', 'Address', 'country' , 'city', 'email','about','image_url']
 
 
 

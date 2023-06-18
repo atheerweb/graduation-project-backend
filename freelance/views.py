@@ -77,6 +77,8 @@ def get_freelancer_with_projects(request, id, format=None):
          projects_data = projects_serializer.data
          freelancer_data = {
             'name': f"{freelancer.first_name} {freelancer.last_name}",
+            'image_url': f"{freelancer.image_url} ",
+            'name': f"{freelancer.about} ",
             'projects': projects_data
          }
          return Response(freelancer_data)
