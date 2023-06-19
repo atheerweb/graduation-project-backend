@@ -15,7 +15,12 @@ class userser(serializers.ModelSerializer):
 class CourseSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ['course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
+        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
+
+class CateogrySerial(serializers.ModelSerializer):
+    class Meta:
+        model = Course 
+        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
 class CoursesSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
@@ -45,3 +50,8 @@ class CourseSerializerRAN(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['course_id', 'course_name', 'price', 'duration', 'user_full_name', 'description' ,'image_url' ]
+
+class CourseSerial_url(serializers.ModelSerializer):
+    class Meta:
+        model = Course 
+        fields = [ 'course_url']

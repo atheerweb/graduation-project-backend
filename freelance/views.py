@@ -1,23 +1,28 @@
+from re import I
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view , authentication_classes , permission_classes
 from freelance.models import projects
-from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer 
+from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer , FreelancerDataSerializer
 from django.views.decorators.http import require_http_methods
 from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers 
 from django.http import JsonResponse
 from accounts.models import MyUser
 from users.models import Permission, Role, UserRoles
-from freelance.models import Job,UserApplyJobs
+from freelance.models import Job,UserApplyJobs, Major, FreelancerData
 from django.contrib.auth.models import User
 from .serializer import AllFreelancers, RandomSerial
 from graduation.serializers import UserRolesSerializers
 from django.http import JsonResponse
 from django.http import HttpRequest
 from random import sample
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication ,TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from django_filters import rest_framework as filters
+from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework import viewsets
+from graduation.permissons import IsOwnerOrReadOnly
+from .permission import IsOwnerOrReadOnlyForJob
 
 # Create your views here.
 
@@ -56,7 +61,7 @@ def user_list(request, format=None):
 def get_freelancers(request):
    if request.method == 'GET':
       freelancer_roles = Role.objects.get(role_id=2)
-      freelancer_users = MyUser.objects.filter(user_to_role=freelancer_roles)
+      freelancer_users = MyUser.objects.filter(role_to_user=freelancer_roles)
       
       serializer = AllFreelancers(freelancer_users, many=True)
       return Response(serializer.data)
@@ -72,6 +77,8 @@ def get_freelancer_with_projects(request, id, format=None):
          projects_data = projects_serializer.data
          freelancer_data = {
             'name': f"{freelancer.first_name} {freelancer.last_name}",
+            'image_url': f"{freelancer.image_url} ",
+            'name': f"{freelancer.about} ",
             'projects': projects_data
          }
          return Response(freelancer_data)
@@ -83,7 +90,7 @@ def get_freelancer_with_projects(request, id, format=None):
 def top_5_freelancers(request):
    if request.method == 'GET':
       freelancer_roles = Role.objects.get(role_id=2)
-      freelancer_users = MyUser.objects.filter(user_to_role=freelancer_roles)[:5]
+      freelancer_users = MyUser.objects.filter(role_to_user=freelancer_roles)[:5]
       serializer = AllFreelancers(freelancer_users, many=True)
    return Response(serializer.data)
 
@@ -171,8 +178,12 @@ def get_jobs(request,  format = None):
 def get_job(request, id , format = None):
          if request.method == "GET":
             jobs_name_query =Job.objects.get(job_id=id)
-            serializer =JobSerializer(jobs_name_query)
-            return Response(serializer.data)
+            major_query=Major.objects.filter(major_id=jobs_name_query.major_rel)
+            serializer = JobSerializer(jobs_name_query)
+            sel = dict(serializer.data)
+            sel['Major']= major_query.get().major_name
+            return Response(sel.data)
+            #return Response(serializer.data)
 
 
 @api_view(['POST'])
@@ -182,9 +193,107 @@ def post(request):
          if request.method == 'POST':
             serializer = JobSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+               serializer.save()
+               return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# viewsets for jobs include post, get, put, delete and exact filter
+class viewsets_job(viewsets.ModelViewSet):
+   queryset = Job.objects.all()
+   serializer_class = JobSerializer
+   filter_backends =[filters.DjangoFilterBackend,]
+   filterset_fields = ['jop_title','major_rel']
+#  authentication_classes = [TokenAuthentication,]
+   permission_classes = [IsOwnerOrReadOnlyForJob]
 
+
+
+# viewsets for projects include post, get, put, delete and exact filter
+class viewsets_project(viewsets.ModelViewSet):
+   queryset = projects.objects.all()
+   serializer_class = ProjectsSerializer
+   filter_backends =[filters.DjangoFilterBackend,]
+   filterset_fields = ['project_name','project_descriotion']
+   permission_classes = [IsOwnerOrReadOnly]
+
+# filter by major name
+@api_view()
+@permission_classes([AllowAny])
+def major_filter(request, format=None):
+    queryset = Job.objects.all()
+    major = request.query_params.get('major_rel__major_name', None)
+    if major: 
+        queryset = queryset.filter(major_rel__major_name__contains=major)
+        if len(queryset) == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    serializer = JobsSerializer(queryset, many=True)
+    data = serializer.data
+    return Response(data)
+  
+# Filter by Job title 
+
+@api_view()
+@permission_classes([AllowAny])
+def job_filter(request, format=None):
+    queryset = Job.objects.all()
+    job_name = request.query_params.get('jop_title', None)
+    if job_name:
+           queryset = queryset.filter(jop_title__contains=job_name)
+           if len(queryset) == 0:
+               return Response(status=status.HTTP_404_NOT_FOUND)
+         
+    serializer = JobsSerializer(queryset, many=True)
+    data = serializer.data
+    return Response(data)
+  
+#Filter by freelancer name
+
+@api_view()
+@permission_classes([AllowAny])
+def freelancer_filter(request, format=None):
+    queryset = FreelancerData.objects.all()
+    freelancer_name = request.query_params.get('freelancer_rel__first_name', None)
+    if freelancer_name:
+           queryset = queryset.filter(freelancer_rel__first_name__contains=freelancer_name)
+           if len(queryset) == 0:
+               return Response(status=status.HTTP_404_NOT_FOUND)
+         
+    serializer = FreelancerDataSerializer(queryset, many=True)
+    data = serializer.data
+
+   #  Retrieve and append user first and last name
+
+   #  for freelancer_data in data:
+   #      name = freelancer_data['freelancer_rel']
+   #      users = MyUser.objects.filter(freelancer_rel__first_name=name)
+   #      full_names = [f"{user.first_name} {user.last_name}" for user in users]
+   #      freelancer_data['user_full_name'] = full_names
+
+    return Response(data)
+
+   #  for freelancer_data in data:
+   #      freelancer_rel = freelancer_data['freelancer_rel']
+   #      users = MyUser.objects.filter(id=freelancer_rel.id, first_name=freelancer_rel.first_name)
+   #      full_names = [f"{user.first_name} {user.last_name}" for user in users]
+   #      freelancer_data['user_full_name'] = full_names
+
+   #  return Response(data)
+
+# filter by freelancer major 
+@api_view()
+@permission_classes([AllowAny])
+def freelancer_major_filter(request, format=None):
+    queryset = FreelancerData.objects.all()
+    freelancer_name = request.query_params.get('major_rel__major_name', None)
+    if freelancer_name:
+           queryset = queryset.filter(major_rel__major_name__contains=freelancer_name)
+           if len(queryset) == 0:
+               return Response(status=status.HTTP_404_NOT_FOUND)
+         
+    serializer = FreelancerDataSerializer(queryset, many=True)
+    data = serializer.data
+
+    return Response(data)
+  
