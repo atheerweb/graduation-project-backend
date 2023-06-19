@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django_filters',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,10 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         "knox.auth.TokenAuthentication",
     ]
+}
+
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
 }
