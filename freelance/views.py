@@ -61,7 +61,7 @@ def user_list(request, format=None):
 def get_freelancers(request):
    if request.method == 'GET':
       freelancer_roles = Role.objects.get(role_id=2)
-      freelancer_users = MyUser.objects.filter(user_to_role=freelancer_roles)
+      freelancer_users = MyUser.objects.filter(role_to_user=freelancer_roles)
       
       serializer = AllFreelancers(freelancer_users, many=True)
       return Response(serializer.data)
@@ -90,7 +90,7 @@ def get_freelancer_with_projects(request, id, format=None):
 def top_5_freelancers(request):
    if request.method == 'GET':
       freelancer_roles = Role.objects.get(role_id=2)
-      freelancer_users = MyUser.objects.filter(user_to_role=freelancer_roles)[:5]
+      freelancer_users = MyUser.objects.filter(role_to_user=freelancer_roles)[:5]
       serializer = AllFreelancers(freelancer_users, many=True)
    return Response(serializer.data)
 
@@ -182,8 +182,8 @@ def get_job(request, id , format = None):
             serializer = JobSerializer(jobs_name_query)
             sel = dict(serializer.data)
             sel['Major']= major_query.get().major_name
-            return Response(sel)
-           #return Response(serializer.data)
+            return Response(sel.data)
+            #return Response(serializer.data)
 
 
 @api_view(['POST'])
@@ -201,7 +201,7 @@ def post(request):
 # viewsets for jobs include post, get, put, delete and exact filter
 class viewsets_job(viewsets.ModelViewSet):
    queryset = Job.objects.all()
-   serializer_class = JobsSerializer
+   serializer_class = JobSerializer
    filter_backends =[filters.DjangoFilterBackend,]
    filterset_fields = ['jop_title','major_rel']
 #  authentication_classes = [TokenAuthentication,]

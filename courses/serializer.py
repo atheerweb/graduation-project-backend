@@ -15,7 +15,12 @@ class userser(serializers.ModelSerializer):
 class CourseSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url','course_to_user']
+        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
+
+class CateogrySerial(serializers.ModelSerializer):
+    class Meta:
+        model = Course 
+        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
 class CoursesSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
@@ -38,7 +43,7 @@ class CourseSerializerRAN(serializers.ModelSerializer):
     user_full_name = serializers.SerializerMethodField()
 
     def get_user_full_name(self, obj):
-        users = obj.course_to_user.all()  # Retrieve all related users
+        users = obj.user_to_course.all()  # Retrieve all related users
         full_names = [f"{user.first_name} {user.last_name}" for user in users]
         return full_names
 
