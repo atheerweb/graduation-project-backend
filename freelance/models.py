@@ -22,7 +22,6 @@ class Job(models.Model):
     min_price = models.FloatField(max_length=100 , null=True)
     max_price = models.FloatField(max_length=100 , null=True)
     entry_date = models.DateTimeField(default=timezone.now)
-    jop_to_user= models.ManyToManyField('accounts.MyUser',through='UserApplyJobs')
 
 class UserApplyJobs(models.Model):
     jop_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)

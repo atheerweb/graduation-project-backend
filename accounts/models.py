@@ -26,11 +26,13 @@ class MyUser(AbstractUser):
     image_url = models.CharField(max_length=255, blank=True, null=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True)
     user_to_role = models.ManyToManyField(
-        'users.Role', through='users.UserRoles')
+        'users.Role', through='users.UserRoles',related_name='role_to_user')
     user_to_course = models.ManyToManyField(
-        'courses.Course', through='courses.CourseRegister')
+        'courses.Course', through='courses.CourseRegister',related_name='course_to_user')
     user_to_jop = models.ManyToManyField(
-        'freelance.Job', through='freelance.UserApplyJobs')
+        'freelance.Job', through='freelance.UserApplyJobs',related_name='job_to_user')
+    user_to_Major = models.ManyToManyField(
+        'freelance.Major', through='freelance.FreelancerData',related_name='major_to_user')
 
     def __str__(self):
         return self.username

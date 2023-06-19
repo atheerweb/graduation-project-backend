@@ -9,7 +9,6 @@ from accounts.models import MyUser
 class Role (models.Model):
     role_id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=255)
-    role_to_user = models.ManyToManyField('accounts.MyUser', through='UserRoles')
     role_to_per = models.ManyToManyField('Permission', through='RolePermetion')
 
     def __str__(self):
@@ -19,8 +18,6 @@ class Role (models.Model):
 class Permission (models.Model):
     permission_id = models.AutoField(primary_key=True)
     permission_name = models.CharField(max_length=255)
-    per_to_role = models.ManyToManyField('Role', through='RolePermetion')
-
     def __str__(self):
         return str(self.permission_id)
 
