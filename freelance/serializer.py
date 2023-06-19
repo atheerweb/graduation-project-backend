@@ -36,7 +36,7 @@ class JobsSerializer(serializers.ModelSerializer):
     user_full_name = serializers.SerializerMethodField()
 
     def get_user_full_name(self, obj):
-        users = obj.jop_to_user.all()  # Retrieve all related users
+        users = obj.user_to_jop.all()  # Retrieve all related users
         full_names = [f"{user.first_name} {user.last_name}" for user in users]
         return full_names
 

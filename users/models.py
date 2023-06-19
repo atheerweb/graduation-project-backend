@@ -10,6 +10,7 @@ class Role (models.Model):
     role_id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=255)
     role_to_per = models.ManyToManyField('Permission', through='RolePermetion')
+    user_to_role = models.ManyToManyField('accounts.MyUser',through='UserRoles', related_name='role_to_user')
 
     def __str__(self):
         return str(self.role_id)

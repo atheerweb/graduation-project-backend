@@ -12,6 +12,7 @@ class FreelancerTransaction(models.Model):
 class Major(models.Model):
     major_id = models.AutoField(primary_key=True)
     major_name = models.CharField(max_length=1000)
+    user_to_Major = models.ManyToManyField('accounts.MyUser',through='FreelancerData', related_name='major_to_user')
 
 class Job(models.Model):
     job_id = models.AutoField(primary_key=True)
@@ -22,6 +23,7 @@ class Job(models.Model):
     min_price = models.FloatField(max_length=100 , null=True)
     max_price = models.FloatField(max_length=100 , null=True)
     entry_date = models.DateTimeField(default=timezone.now)
+    user_to_jop = models.ManyToManyField('accounts.MyUser',through='UserApplyJobs',related_name='jop_to_user')
 
 class UserApplyJobs(models.Model):
     jop_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
