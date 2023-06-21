@@ -150,6 +150,7 @@ def get_random_users(request):
    return Response(serializer.data)
 
 
+
 @api_view(['GET'])
 def get_freelancer_with_projects(request, id, format=None):
    if request.method == 'GET':
@@ -158,13 +159,22 @@ def get_freelancer_with_projects(request, id, format=None):
          projects_query = projects.objects.filter(project_rel=freelancer)
          projects_serializer = ProjectsSerializer(projects_query, many=True)
          projects_data = projects_serializer.data
+
+         # Get the major names for the freelancer
+         majors = freelancer.major_to_user.all()
+         major_names = [major.major_name for major in majors]
+
          freelancer_data = {
                'name': f"{freelancer.first_name} {freelancer.last_name}",
-               'projects': projects_data
+               'about': freelancer.about,
+               'major': major_names,
+               'projects': projects_data,
          }
          return Response(freelancer_data)
       except MyUser.DoesNotExist:
          return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 @api_view(['GET'])

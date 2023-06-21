@@ -9,15 +9,19 @@ class Top5(serializers.ModelSerializer):
         model = UserRoles 
         fields = ['user_rel', 'role_rel']
 class ProjectsSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = projects
         fields = ('project_rel','project_name', 'project_descriotion', 'image_urls', 'audio_urls','videos_urls', 'attachements_urls')
 
 
 class AllFreelancers(serializers.ModelSerializer):
+    about = serializers.CharField(source='myuser.about')  
+    major = serializers.StringRelatedField(source='major_rel.major_name')
+
     class Meta:
         model = MyUser
-        fields = ['username','first_name', 'last_name', 'email', 'about','image_url']
+        fields = ['username', 'first_name', 'last_name', 'email', 'about', 'image_url']
 
 class RandomSerial(serializers.ModelSerializer):
     class Meta:
