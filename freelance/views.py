@@ -205,7 +205,7 @@ class viewsets_job(viewsets.ModelViewSet):
    filter_backends =[filters.DjangoFilterBackend,]
    filterset_fields = ['jop_title','major_rel']
 #  authentication_classes = [TokenAuthentication,]
-   permission_classes = [IsOwnerOrReadOnlyForJob]
+   # permission_classes = [IsOwnerOrReadOnlyForJob]
 
 
 
@@ -215,7 +215,7 @@ class viewsets_project(viewsets.ModelViewSet):
    serializer_class = ProjectsSerializer
    filter_backends =[filters.DjangoFilterBackend,]
    filterset_fields = ['project_name','project_descriotion']
-   permission_classes = [IsOwnerOrReadOnly]
+   # permission_classes = [IsOwnerOrReadOnly]
 
 # filter by major name
 @api_view()
