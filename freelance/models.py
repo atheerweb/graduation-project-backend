@@ -24,6 +24,10 @@ class Job(models.Model):
     max_price = models.FloatField(max_length=100 , null=True)
     entry_date = models.DateTimeField(default=timezone.now)
     user_to_jop = models.ManyToManyField('accounts.MyUser',through='UserApplyJobs',related_name='jop_to_user')
+    @property
+    def major_name(self):
+        return self.major_rel.major_name
+
 
 class UserApplyJobs(models.Model):
     jop_rel = models.ForeignKey(MyUser, on_delete=models.CASCADE)
@@ -46,3 +50,9 @@ class FreelancerData(models.Model):
     review = models.FloatField(max_length=5)
     image_url = models.CharField(max_length=2000 , null=True)
     major_rel = models.ForeignKey(Major ,on_delete=models.CASCADE , null=True)
+    @property
+    def user_name(self):
+        return self.freelancer_rel.first_name +' '+self.freelancer_rel.last_name 
+    @property
+    def major_name(self):
+        return self.major_rel.major_name

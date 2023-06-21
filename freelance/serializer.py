@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import projects
+from .models import Major, projects
 from accounts.models import MyUser
 from users.models import UserRoles
 from freelance.models import Job, FreelancerData
@@ -33,7 +33,7 @@ class RandomSerial(serializers.ModelSerializer):
 class FreelancerDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = FreelancerData
-        fields = ['review','image_url','freelancer_rel','major_rel']
+        fields = ['user_name','review','image_url','freelancer_rel','major_rel','major_name']
 
 
 class JobsSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class JobsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Job
-        fields = ['job_id','jop_title','descriotion', 'user_full_name','image_url','min_price','max_price','entry_date' ]
+        fields = ['job_id','jop_title','descriotion', 'user_full_name','image_url','min_price','max_price','entry_date','major_rel', 'major_name']
 
 class JobSerializer(serializers.ModelSerializer):
     user_full_name = serializers.SerializerMethodField()
@@ -58,5 +58,9 @@ class JobSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Job
-        fields = ['job_id','jop_title','descriotion', 'user_full_name',  'image_url','min_price','max_price','entry_date' ]
+        fields = ['job_id','jop_title','descriotion', 'user_full_name',  'image_url','min_price','max_price','entry_date','major_name' ]
 
+class All_Major(serializers.ModelSerializer):
+    class Meta:
+        model = Major 
+        fields = ['major_id','major_name']
