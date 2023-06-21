@@ -16,8 +16,8 @@ class ProjectsSerializer(serializers.ModelSerializer):
 
 
 class AllFreelancers(serializers.ModelSerializer):
-    about = serializers.CharField(source='myuser.about')  
-    major = serializers.StringRelatedField(source='major_rel.major_name')
+    # about = serializers.CharField(source='myuser.about')  
+    # major = serializers.StringRelatedField(source='major_rel.major_name')
 
     class Meta:
         model = MyUser
