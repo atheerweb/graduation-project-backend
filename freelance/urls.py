@@ -26,5 +26,4 @@ urlpatterns = [
     path('filter_freelancer_name/', views.freelancer_filter),
     path('filter_freelancer_major/', views.freelancer_major_filter),
 
-
 ]

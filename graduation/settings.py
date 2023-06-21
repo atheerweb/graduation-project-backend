@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 from decouple import config
+from datetime import timedelta
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -158,15 +159,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
         "knox.auth.TokenAuthentication",
-    ]
+    )
 }
 
 
 GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
+    'all_applications': True,
+    'group_models': True,
+}
+
+REST_KNOX = {
+    'USER_SERIALIZER': 'graduation.serializers.UserSerializer',
+    'TOKEN_TTL': timedelta(hours=48)
 }
