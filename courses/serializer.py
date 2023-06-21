@@ -24,7 +24,7 @@ class CateogrySerial(serializers.ModelSerializer):
 class CoursesSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ( 'course_name', 'price','duration', 'description', 'image_url')
+        fields = ( 'course_id','course_name', 'price','duration', 'description', 'image_url')
 
 class Category(serializers.ModelSerializer):
     class Meta:
