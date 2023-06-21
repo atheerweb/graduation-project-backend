@@ -21,7 +21,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework import viewsets
-from graduation.permissons import IsOwnerOrReadOnly
+# from graduation.permissons import IsOwnerOrReadOnly
 # from .permission import IsOwnerOrReadOnlyForJob
 
 # Create your views here.
