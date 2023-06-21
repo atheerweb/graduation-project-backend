@@ -12,7 +12,7 @@ class ProjectsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = projects
-        fields = ('project_rel','project_name', 'project_descriotion', 'image_urls', 'audio_urls','videos_urls', 'attachements_urls')
+        fields = ('id','project_rel','project_name', 'project_descriotion', 'image_urls', 'audio_urls','videos_urls', 'attachements_urls')
 
 
 class AllFreelancers(serializers.ModelSerializer):

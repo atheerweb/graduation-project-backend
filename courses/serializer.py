@@ -15,7 +15,7 @@ class userser(serializers.ModelSerializer):
 class CourseSerial(serializers.ModelSerializer):
     class Meta:
         model = Course 
-        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url']
+        fields = ['course_id','course_name', 'price','duration' , 'description' , 'image_url', 'course_url','cat_has_courses']
 
 class CateogrySerial(serializers.ModelSerializer):
     class Meta:
