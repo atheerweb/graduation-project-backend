@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view , authentication_classes , permission_classes
 from freelance.models import projects
-from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer , FreelancerDataSerializer
+from .serializer import ProjectsSerializer,JobsSerializer , JobSerializer , FreelancerDataSerializer , All_Major
 from django.views.decorators.http import require_http_methods
 from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers 
 from django.http import JsonResponse
@@ -307,3 +307,9 @@ def freelancer_major_filter(request, format=None):
 
     return Response(data)
   
+@api_view(['GET'])
+def get_all_major(request,  format = None):
+        if request.method == "GET":
+            major_name_query =Major.objects.all()
+            serializer =All_Major(major_name_query, many=True)
+            return Response(serializer.data)

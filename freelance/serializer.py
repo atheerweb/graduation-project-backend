@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import projects
+from .models import Major, projects
 from accounts.models import MyUser
 from users.models import UserRoles
 from freelance.models import Job, FreelancerData
@@ -60,3 +60,7 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = ['job_id','jop_title','descriotion', 'user_full_name',  'image_url','min_price','max_price','entry_date' ]
 
+class All_Major(serializers.ModelSerializer):
+    class Meta:
+        model = Major 
+        fields = ['major_id','major_name']
