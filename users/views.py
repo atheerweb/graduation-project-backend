@@ -1,15 +1,14 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from accounts.models import MyUser
 
 from django.views.decorators.http import require_http_methods
 
 from graduation.serializers import Userserializer, Roleserializer, UserRolesSerializers
 from django.http import JsonResponse
 from .models import  Permission, Role, UserRoles
-
-
+from .serializers import usersSerial
 # Create your views here.
 
 
@@ -52,3 +51,10 @@ def get_id_by_name(request):
             return JsonResponse({'error': 'Record not found'})
     else:
         return JsonResponse({'error': 'Name parameter not provided'})
+
+@api_view(['GET'])
+def get_user(request , id ,format = None):
+    user_query = MyUser.objects.get(username=id)
+    serializer = usersSerial(user_query)
+
+    return Response(serializer.data)
