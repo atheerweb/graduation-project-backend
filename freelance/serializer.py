@@ -38,15 +38,21 @@ class FreelancerDataSerializer(serializers.ModelSerializer):
 
 class JobsSerializer(serializers.ModelSerializer):
     user_full_name = serializers.SerializerMethodField()
+    user_image = serializers.SerializerMethodField()
 
     def get_user_full_name(self, obj):
         users = obj.user_to_jop.all()  # Retrieve all related users
-   
-        return users
+        full_names = [f"{user.first_name} {user.last_name}" for user in users]
+        return full_names
+    
+    def get_user_image(self, obj):
+        users = obj.user_to_jop.all()  # Retrieve all related users
+        user_image = [user.image_url for user in users]
+        return user_image
 
     class Meta:
         model = Job
-        fields = ['job_id','jop_title','descriotion', 'users','image_url','min_price','max_price','entry_date','major_rel', 'major_name', 'image_url']
+        fields = ['job_id','jop_title','descriotion', 'user_image' ,   'user_full_name','image_url','min_price','max_price','entry_date','major_rel', 'major_name']
 
 class JobSerializer(serializers.ModelSerializer):
     user_full_name = serializers.SerializerMethodField()

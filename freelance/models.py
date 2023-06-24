@@ -24,6 +24,10 @@ class Job(models.Model):
     max_price = models.FloatField(max_length=100 , null=True)
     entry_date = models.DateTimeField(default=timezone.now)
     user_to_jop = models.ManyToManyField('accounts.MyUser',through='UserApplyJobs',related_name='jop_to_user')
+    
+    @property
+    def user_data(self):
+        return self.user_to_jop
     @property
     def major_name(self):
         return self.major_rel.major_name

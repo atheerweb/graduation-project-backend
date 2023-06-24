@@ -180,9 +180,16 @@ def get_freelancer_with_projects(request, id, format=None):
 @api_view(['GET'])
 def get_jobs(request,  format = None):
          if request.method == "GET":
-            jobs_name_query =Job.objects.all()
-            serializer =JobsSerializer(jobs_name_query, many=True)
+            queryset =Job.objects.all()
+            serializer =JobsSerializer(queryset, many=True)
             return Response(serializer.data)
+
+
+
+
+
+
+
 
 @api_view(['GET'])
 def get_job(request, id , format = None):
