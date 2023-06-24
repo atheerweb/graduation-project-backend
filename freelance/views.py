@@ -185,15 +185,12 @@ def get_jobs(request,  format = None):
             return Response(serializer.data)
 
 @api_view(['GET'])
-def get_job(request, id , format = None):
-         if request.method == "GET":
-            jobs_name_query =Job.objects.get(job_id=id)
-            major_query=Major.objects.filter(major_id=jobs_name_query.major_rel)
-            serializer = JobSerializer(jobs_name_query)
-            sel = dict(serializer.data)
-            sel['Major']= major_query.get().major_name
-            return Response(sel.data)
-            #return Response(serializer.data)
+def get_job(request, id, format=None):
+    if request.method == "GET":
+        jobs_name_query = Job.objects.get(job_id=id)
+        serializer = JobSerializer(jobs_name_query)
+        return Response(serializer.data)
+        # return Response(serializer.data)
 
 
 @api_view(['POST'])
