@@ -24,12 +24,10 @@ def get_courses(request, format=None):
     if course_name_v:
         queryset = queryset.filter(course_name__contains=course_name_v)
         if len(queryset) == 0:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
+            return Response(status=status.HTTP_404_NOT_FOUND)   
     serializer = CoursesSerial(queryset, many=True)
     data = serializer.data
 
-    # Retrieve and append user first and last name
     for course_data in data:
         course_name = course_data['course_name']
         users = MyUser.objects.filter(course_to_user__course_name=course_name)
@@ -45,10 +43,10 @@ def category_filter(request, format=None):
     queryset = Course.objects.all()
     category_name = request.query_params.get('cat_has_courses__category_name', None)
     if category_name:
-           queryset = queryset.filter(cat_has_courses__category_name__contains=category_name)
-           if len(queryset) == 0:
-               return Response(status=status.HTTP_404_NOT_FOUND)
-         
+        queryset = queryset.filter(cat_has_courses__category_name__contains=category_name)
+        if len(queryset) == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
     serializer = CateogrySerial(queryset, many=True)
     data = serializer.data
     return Response(data)
